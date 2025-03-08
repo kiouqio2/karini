@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>падарак</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ffb6c1, #ffffff); /* бело-розовый фон */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      position: relative;
+    }
+
+    #cat {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: auto;
+    }
+
+    #footer, #footer2 {
+      position: absolute;
+      bottom: 10px;
+      font-size: 16px;
+      color: #ff0000;
+      text-transform: lowercase;
+    }
+
+    #footer { left: 10px; }
+    #footer2 { right: 10px; }
+
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      animation: float 1s ease-in-out forwards;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-50px); opacity: 0; }
+    }
+
+    /* Текст по бокам */
+    .side-text {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 64px;
+      color: #ff0000;
+      font-family: 'Great Vibes', cursive;
+      font-weight: 300;
+    }
+
+    .left-text { left: 20px; }
+    .right-text { right: 20px; }
+
+    /* Анимация увеличения текста */
+    .message {
+      position: absolute;
+      font-size: 24px;
+      color: #333;
+      font-weight: bold;
+      text-transform: uppercase;
+      animation: grow 1s ease-in-out forwards;
+    }
+
+    @keyframes grow {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    /* Готические кресты и сердечки */
+    .side-emoji {
+      position: absolute;
+      font-size: 60px;
+      opacity: 0;
+      animation: fadeIn 1s ease-in forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Укажи правильный путь к своей картинке -->
+ 
+<img src="https://i.imgur.com/eDELAtk.jpeg" alt="белый котик" width="600" height="auto">
+  
+  <div id="footer">карине от кирилла</div>
+  <div id="footer2">карине от кирилла</div>
+
+  <!-- Текст по бокам -->
+  <div class="side-text left-text">карине</div>
+  <div class="side-text right-text">от кирилла</div>
+
+  <script>
+    const messages = [
+      "ето ти",
+      "лучшая",
+      "крутая",
+      "невероятная",
+      "с крутым пабликом",
+      "топчик",
+      "прекрасные изделия из глины"
+    ];
+
+    const emojis = ['💖', '😻', '😘', '💋', '💖', '😻'];
+    const crossesAndHearts = ['✝', '❤️'];
+    let messageIndex = 0;
+
+    function displayMessage(event) {
+      const messageElement = document.createElement('div');
+      messageElement.textContent = messages[messageIndex];
+      messageElement.classList.add('message');
+      messageElement.style.left = `${event.clientX}px`;
+      messageElement.style.top = `${event.clientY}px`;
+      document.body.appendChild(messageElement);
+
+      setTimeout(() => { messageElement.remove(); }, 1000);
+      messageIndex = (messageIndex + 1) % messages.length;
+
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+      const emojiElement = document.createElement('div');
+      emojiElement.textContent = emoji;
+      emojiElement.classList.add('emoji');
+      emojiElement.style.left = `${event.clientX + Math.random() * 50 - 25}px`;
+      emojiElement.style.top = `${event.clientY + Math.random() * 50 - 25}px`;
+      document.body.appendChild(emojiElement);
+
+      setTimeout(() => { emojiElement.remove(); }, 1000);
+
+      // Добавляем хаотичные кресты и сердечки, ближе к центру
+      addRandomSideEmoji();
+    }
+
+    function addRandomSideEmoji() {
+      // Генерируем случайные координаты по бокам, но ближе к центру (20% экрана с каждой стороны)
+      const sideXPositions = [
+        Math.random() * 20 + 10 + "vw", // Левая область (10-30% экрана)
+        "calc(100vw - " + (Math.random() * 20 + 10) + "vw)" // Правая область (70-90%)
+      ];
+      
+      const randomY = Math.random() * 90 + 5 + "%"; // Высота случайная, но не у самого края
+      const randomX = sideXPositions[Math.floor(Math.random() * sideXPositions.length)]; // Выбор стороны
+
+      const emoji = document.createElement('div');
+      emoji.textContent = crossesAndHearts[Math.floor(Math.random() * crossesAndHearts.length)];
+      emoji.classList.add('side-emoji');
+      emoji.style.left = randomX;
+      emoji.style.top = randomY;
+      document.body.appendChild(emoji);
+    }
+
+    document.body.addEventListener('click', displayMessage);
+  </script>
+</body>
+</html>
